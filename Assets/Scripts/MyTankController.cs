@@ -191,12 +191,12 @@ public class MyTankController : MonoBehaviour
                 {
                     if (wheelsInfo.leftSideWheel)
                     {
-                        wheelsInfo.wheel.brakeTorque = brakePower/5;
+                        wheelsInfo.wheel.brakeTorque = brakePower/2;
                         wheelsInfo.wheel.motorTorque = 0f;
                     }
                     if (!wheelsInfo.leftSideWheel)
                     {
-                        wheelsInfo.wheel.brakeTorque = brakePower/5;
+                        wheelsInfo.wheel.brakeTorque = brakePower/2;
                         wheelsInfo.wheel.motorTorque = 0f;
                     }
                 }
