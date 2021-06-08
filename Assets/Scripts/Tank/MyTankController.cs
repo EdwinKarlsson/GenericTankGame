@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MyTankController : MonoBehaviour
 {
-[Header("Settings")]
+    [Header("Settings")]
     [SerializeField] float mouseSensitivety = 2f;
     [SerializeField] float torqueMultiplier = 1f;
 
@@ -14,6 +14,8 @@ public class MyTankController : MonoBehaviour
     [SerializeField] Transform hullT;
     [SerializeField] Transform turretT;
     [SerializeField] Transform cannonT;
+
+    [SerializeField] Transform firingPointT;
 
     [Header("Wheels")]
     [SerializeField] List<WheelsInfo> wheelsInfos;
@@ -33,6 +35,12 @@ public class MyTankController : MonoBehaviour
     bool leftTrackForward = false;
     bool leftTrackBack = false;
 
+    [Header("Projectile")]
+    [SerializeField] GameObject projectile;
+    [SerializeField] float projectileForce;
+    [SerializeField] float reloadTime;
+    bool canFire =true;
+
 
     void Start()
     {
@@ -46,48 +54,23 @@ public class MyTankController : MonoBehaviour
         brakePower = motorTorqueInput * 10;
 
         PlayerInput();
-
         UpdateMouseLook();
-
         PlayerInputTranslator();
-
         TrackInput();
+
+        if (canFire && Input.GetKey(KeyCode.Mouse0))
+        {
+            StartCoroutine(Fire());
+        }
     }
 
+    #region Movement
     private void PlayerInput()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            forward = true;
-        }
-        else
-        {
-            forward = false;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            right = true;
-        }
-        else
-        {
-            right = false;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            left = true;
-        }
-        else
-        {
-            left = false;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            back = true;
-        }
-        else
-        {
-            back = false;
-        }
+        forward = Input.GetKey(KeyCode.W);
+        right = Input.GetKey(KeyCode.D);
+        left = Input.GetKey(KeyCode.A);
+        back = Input.GetKey(KeyCode.S);
     }
 
     private void TrackInput()
@@ -290,6 +273,23 @@ public class MyTankController : MonoBehaviour
     }
 
     //https://docs.unity3d.com/Manual/WheelColliderTutorial.html To make tank move
+
+    #endregion
+
+    #region Firing
+
+    IEnumerator Fire()
+    {
+        canFire = false;
+        GameObject shot = Instantiate(projectile, firingPointT.position, firingPointT.rotation);
+        shot.GetComponent<Rigidbody>().AddForce(shot.transform.forward * projectileForce, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(reloadTime);
+        canFire = true;
+    }
+
+    #endregion
+
     [System.Serializable]
     public class WheelsInfo
     {
