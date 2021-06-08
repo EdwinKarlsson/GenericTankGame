@@ -8,10 +8,18 @@ public class SoldierPlayer : MonoBehaviour
     [SerializeField] float mouseSensitivity;
     //Movement
     [SerializeField] float movementSpeed;
+    [SerializeField] float maximumMovementSpeed;
     [SerializeField] float fallingMovementSpeed;
 
     [Header("Transforms")]
     [SerializeField] Transform myCamera;
+
+    [Header("Colliders")]
+    [SerializeField] Collider feetCollider;
+    [SerializeField] PhysicMaterial[] feetSticky;
+
+
+    //Misc
 
     float cameraPitch;
 
@@ -26,7 +34,7 @@ public class SoldierPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        myRB = GetComponent<Rigidbody>();  
+        myRB = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -39,78 +47,10 @@ public class SoldierPlayer : MonoBehaviour
 
     private void PlayerMovement()
     {
-        switch (forward, right, back, left, falling)
+        Debug.Log(myRB.velocity.magnitude);
+        if (forward)
         {
-            case (true, false, false, false, false):
-                myRB.AddForce(transform.forward * movementSpeed);
-                break;
-
-            case (true, false, false, false, true):
-                myRB.AddForce(transform.forward * fallingMovementSpeed);
-                break;
-
-            case (true, true, false, false, false):
-                myRB.AddForce((transform.forward + transform.right) * movementSpeed / 2);
-                break;
-
-            case (true, true, false, false, true):
-                myRB.AddForce((transform.forward + transform.right) * fallingMovementSpeed / 2);
-                break;
-
-            case (false, true, false, false, false):
-                myRB.AddForce(transform.right * movementSpeed);
-                break;
-
-            case (false, true, false, false, true):
-                myRB.AddForce(transform.right * fallingMovementSpeed);
-                break;
-
-            case (false, true, true, false, false):
-                myRB.AddForce((transform.right - transform.forward) * movementSpeed / 2);
-                break;
-
-            case (false, true, true, false, true):
-                myRB.AddForce((transform.right - transform.forward) * fallingMovementSpeed / 2);
-                break;
-
-            case (false, false, true, false, false):
-                myRB.AddForce((-transform.forward) * movementSpeed);
-                break;
-
-            case (false, false, true, false, true):
-                myRB.AddForce((-transform.forward) * fallingMovementSpeed);
-                break;
-
-            case (false, false, true, true, false):
-                myRB.AddForce((-transform.right - transform.forward) * movementSpeed / 2);
-                break;
-
-            case (false, false, true, true, true):
-                myRB.AddForce((-transform.right - transform.forward) * fallingMovementSpeed / 2);
-                break;
-
-            case (false, false, false, true, false):
-                myRB.AddForce((-transform.right) * movementSpeed);
-                break;
-
-            case (false, false, false, true, true):
-                myRB.AddForce((-transform.right) * fallingMovementSpeed);
-                break;
-
-            case (true, false, false, true, false):
-                myRB.AddForce((-transform.right + transform.forward) * movementSpeed / 2);
-                break;
-
-            case (true, false, false, true, true):
-                myRB.AddForce((-transform.right + transform.forward) * fallingMovementSpeed / 2);
-                break;
-
-            default:
-                if (myRB.velocity.magnitude < 0.1)
-                {
-                    myRB.velocity = Vector3.zero;
-                }
-                break;
+            myRB.AddForce(transform.forward * movementSpeed, ForceMode.VelocityChange);
         }
     }
 
