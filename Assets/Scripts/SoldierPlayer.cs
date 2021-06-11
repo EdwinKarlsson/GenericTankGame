@@ -23,15 +23,14 @@ public class SoldierPlayer : MonoBehaviour
 
     float cameraPitch;
 
-    bool falling = false;
-    bool toFast = false;
+    Vector3 velocity;
 
-    Rigidbody myRB;
+    CharacterController myCC;
 
     // Start is called before the first frame update
     void Start()
     {
-        myRB = GetComponent<Rigidbody>();
+        myCC = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -46,7 +45,9 @@ public class SoldierPlayer : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
-        GetComponent<CharacterController>().Move(move*movementSpeed*Time.deltaTime);
+        myCC.Move(move*movementSpeed*Time.deltaTime);
+        velocity.y += Physics.gravity.y*Time.deltaTime;
+        myCC.Move(velocity * Time.deltaTime);
     }
 
     private void MouseLook()
