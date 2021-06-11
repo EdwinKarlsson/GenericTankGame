@@ -23,11 +23,8 @@ public class SoldierPlayer : MonoBehaviour
 
     float cameraPitch;
 
-    bool forward = false;
-    bool right = false;
-    bool back = false;
-    bool left = false;
     bool falling = false;
+    bool toFast = false;
 
     Rigidbody myRB;
 
@@ -40,26 +37,16 @@ public class SoldierPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PlayerInputTranslator();
         PlayerMovement();
         MouseLook();
     }
 
     private void PlayerMovement()
     {
-        Debug.Log(myRB.velocity.magnitude);
-        if (forward)
-        {
-            myRB.AddForce(transform.forward * movementSpeed, ForceMode.VelocityChange);
-        }
-    }
-
-    private void PlayerInputTranslator()
-    {
-        forward = Input.GetKey(KeyCode.W);
-        right = Input.GetKey(KeyCode.D);
-        back = Input.GetKey(KeyCode.S);
-        left = Input.GetKey(KeyCode.A);
+        float x = Input.GetAxisRaw("Horizontal");
+        float z = Input.GetAxisRaw("Vertical");
+        Vector3 move = transform.right * x + transform.forward * z;
+        GetComponent<CharacterController>().Move(move*movementSpeed*Time.deltaTime);
     }
 
     private void MouseLook()

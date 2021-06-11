@@ -624,6 +624,7 @@ GameObject:
   - component: {fileID: 522640492}
   - component: {fileID: 522640494}
   - component: {fileID: 522640493}
+  - component: {fileID: 522640495}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -759,6 +760,24 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!143 &522640495
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 522640487}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &581631600
 GameObject:
   m_ObjectHideFlags: 0
