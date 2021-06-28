@@ -22,6 +22,10 @@ public class MyTankController : MonoBehaviour
      float motorTorqueInput = 0;
     float brakePower = 0;
 
+    [Header("Cameras")]
+    [SerializeField] Camera frontCam = null;
+    [SerializeField] Camera roofCam = null;
+
     float cameraPitch = 90f;
     float cannonPitch = 0f;
 
@@ -44,7 +48,8 @@ public class MyTankController : MonoBehaviour
 
     void Start()
     {
-
+        frontCam.enabled = false;
+        roofCam.enabled = true;
     }
 
     // Update is called once per frame
@@ -71,6 +76,11 @@ public class MyTankController : MonoBehaviour
         right = Input.GetKey(KeyCode.D);
         left = Input.GetKey(KeyCode.A);
         back = Input.GetKey(KeyCode.S);
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            frontCam.enabled = !frontCam.enabled;
+            roofCam.enabled = !roofCam.enabled;
+        }
     }
 
     private void TrackInput()

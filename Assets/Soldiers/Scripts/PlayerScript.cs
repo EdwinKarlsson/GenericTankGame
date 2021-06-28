@@ -2,30 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoldierPlayer : MonoBehaviour
+public class PlayerScript : MonoBehaviour
 {
-    [Header("Settings")]
+    [Header("Settings")] //Things that will either be controlled by the player or needs further tweaking
     [SerializeField] float mouseSensitivity;
-    //Movement
     [SerializeField] float movementSpeed;
-    [SerializeField] float maximumMovementSpeed;
     [SerializeField] float fallingMovementSpeed;
+    [SerializeField] float groundDistance = 0.4f;
+    public float gravityMultiplier = 1;
 
-    [Header("Transforms")]
+    [Header("Other")]
+    //Camera
     [SerializeField] Transform myCamera;
-
-    [Header("Colliders")]
-    [SerializeField] Collider feetCollider;
-    [SerializeField] PhysicMaterial[] feetSticky;
-
-
-    //Misc
-
     float cameraPitch;
-
+    //Movement
     Vector3 velocity;
-
     CharacterController myCC;
+    [SerializeField] Transform groundCheck;
+    [SerializeField] LayerMask groundMask;
+    bool isGrounded;
+
 
     // Start is called before the first frame update
     void Start()
@@ -36,6 +32,12 @@ public class SoldierPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isGrounded = Physics.CheckSphere(groundCheck.position,groundDistance, groundMask);
+
+        if (isGrounded && velocity.y < 0)
+        {
+            velocity.y = -2f;
+        }
         PlayerMovement();
         MouseLook();
     }
@@ -46,8 +48,11 @@ public class SoldierPlayer : MonoBehaviour
         float z = Input.GetAxisRaw("Vertical");
         Vector3 move = transform.right * x + transform.forward * z;
         myCC.Move(move*movementSpeed*Time.deltaTime);
-        velocity.y += Physics.gravity.y*Time.deltaTime;
+
+        velocity.y += Physics.gravity.y*gravityMultiplier*Time.deltaTime;
         myCC.Move(velocity * Time.deltaTime);
+
+        Debug.Log(velocity.y);
     }
 
     private void MouseLook()
